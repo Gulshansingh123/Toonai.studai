@@ -1,0 +1,28 @@
+workflows:
+  toonai_android:
+    name: ToonAI Studio Android
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      android_signing:
+        - toonai_keystore
+      vars:
+        PACKAGE_NAME: "com.example.toonai_studio"
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          cd toonai_studio
+          flutter pub get
+      - name: Build Android APK
+        script: |
+          cd toonai_studio
+          flutter build apk --release
+    artifacts:
+      - toonai_studio/build/app/outputs/flutter-apk/app-release.apk
+    publishing:
+      email:
+        recipients:
+          - $CM_EMAIL
+        notify:
+          success: true
+          failure: true
